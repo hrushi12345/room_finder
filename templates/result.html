@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Recommendations</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body class="bg-light">
+
+<!-- 🔹 Navbar with Logout Button -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="#">Hotel Recommender</a>
+        <div class="collapse navbar-collapse justify-content-end">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link btn btn-danger text-white" href="{{ url_for('logout') }}">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">
+        Recommended Hotels for <strong>{{ first_name }} {{ last_name }}</strong>
+    </h2>
+
+    {% if recommended_hotels %}
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped shadow-lg">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Hotel Name</th>
+                        <th>Region</th>
+                        <th>Accommodation Type</th>
+                        <th>Cost</th>
+                        <th>Latitude</th>
+                        <th>Longitude</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for hotel in recommended_hotels %}
+                    <tr>
+                        <td>{{ hotel.hotel_name }}</td>
+                        <td>{{ hotel.region }}</td>
+                        <td>{{ hotel.accommodation_type }}</td>
+                        <td>${{ hotel.cost }}</td>
+                        <td>{{ hotel.latitude }}</td>
+                        <td>{{ hotel.longitude }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p class="text-center text-danger fs-4">No recommendations available.</p>
+    {% endif %}
+
+    <div class="text-center mt-4">
+        <a href="{{ url_for('index') }}" class="btn btn-primary">Search Again</a>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
