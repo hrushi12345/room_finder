@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Room Finder System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .welcome-box {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 15px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 10px;
+            transition: 0.3s;
+            color: white;
+        }
+        .welcome-box:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body class="bg-cover bg-center h-screen flex justify-center items-center" style="background-image: url('/static/background_image.jpg');">
+
+    <!-- Navbar -->
+    <nav class="bg-black bg-opacity-70 text-white fixed top-0 left-0 w-full p-4 flex justify-between items-center">
+        <div class="text-lg font-bold">Room Finder System</div>
+        <div class="space-x-6">
+            {% if session['user_id'] %}
+                <a href="/index" class="hover:underline">Home</a>
+                <a href="/logout" class="hover:underline">Logout</a>
+                <a href="/booking_details" class="hover:underline">Booking Details</a>
+            {% else %}
+                <a href="/" class="hover:underline">Home</a>
+                <a href="/login" class="hover:underline">Login</a>
+                <a href="/register" class="hover:underline">Register</a>
+            {% endif %}
+        </div>
+    </nav>
+    
+    <div class="content">
+        <div class="welcome-box">
+            <h1>Welcome to Room Finder System</h1>
+            <p>Find the best rooms based on your preferences.</p>
+        </div>
+    </div>
+</body>
+</html>
