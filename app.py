@@ -33,12 +33,17 @@ from models import UserAccount, UserProfile, Room
 # Load dataset from CSV
 df = pd.read_csv('dataset_model_training/hotel_reviews.csv')
 
-### 🔹 Default Page → Login
 @app.route('/')
 def home():
-    if 'user_id' in session:
-        return redirect(url_for('index'))  # If logged in, go to search
-    return redirect(url_for('login'))  # Default page is login
+    return render_template('home.html')
+
+
+### 🔹 Default Page → Login
+# @app.route('/index')
+# def index():
+#     if 'user_id' in session:
+#         return redirect(url_for('index'))  # If logged in, go to search
+#     return redirect(url_for('login'))  # Default page is login
 
 ### 🔹 User Registration Route
 @app.route('/register', methods=['GET', 'POST'])
@@ -109,8 +114,8 @@ def index():
     """Render the homepage with a searchable hotel dropdown from dataset."""
     if 'user_id' not in session:
         return redirect(url_for('login'))  # Ensure user is logged in
-    hotel_list = df['hotel_name'].unique().tolist()
-    return render_template('index.html', hotel_list=hotel_list)
+    region_list = df['region'].unique().tolist()
+    return render_template('index.html', region_list=region_list)
 
 @app.route('/recommend', methods=['POST'])
 def recommend():
@@ -125,21 +130,20 @@ def recommend():
     first_name = user.firstName if user else "Guest"
     last_name = user.lastName if user else ""
     
-    selected_hotel = request.form.get('hotel_name')
+    selected_region = request.form.get('region_name')
     accommodation_type = request.form.get("accommodation_type")
     max_cost = request.form.get("max_cost")
 
     # Get selected hotel's region
-    selected_row = df[df['hotel_name'] == selected_hotel]
+    selected_row = df[df['region'] == selected_region]
     if selected_row.empty:
-        print("No hotel found with that name.")
+        print("No region found with that name.")
         recommendations = []
     else:
         selected_row = selected_row.iloc[0]
         region = selected_row['region']
-
         # Step 1: Filter hotels in the same region (excluding the selected hotel)
-        filtered_df = df[(df["region"] == region) & (df["hotel_name"] != selected_hotel)]        
+        filtered_df = df[df["region"] == region]
                 
         if accommodation_type:
             filtered_df = filtered_df[filtered_df["accommodation_type"] == accommodation_type]
