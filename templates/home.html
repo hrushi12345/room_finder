@@ -6,35 +6,6 @@
     <title>Room Finder System</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-            background: url('static/background_image.jpg') no-repeat center center/cover;
-            height: 100vh;
-            color: white;
-            text-align: center;
-        }
-        .navbar {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            padding: 15px 30px;
-            background: rgba(0, 0, 0, 0.7);
-            position: fixed;
-            width: 100%;
-            top: 0;
-            left: 0;
-        }
-        .navbar a {
-            color: white;
-            text-decoration: none;
-            padding: 10px 20px;
-            transition: 0.3s;
-        }
-        .navbar a:hover {
-            text-decoration: underline;
-        }
         .content {
             display: flex;
             flex-direction: column;
@@ -50,6 +21,7 @@
             background: rgba(0, 0, 0, 0.6);
             border-radius: 10px;
             transition: 0.3s;
+            color: white;
         }
         .welcome-box:hover {
             background: rgba(255, 255, 255, 0.3);
@@ -57,21 +29,23 @@
         }
     </style>
 </head>
-<body>
-    <!-- Navigation Bar -->
-    <div class="navbar">
-        <div>
+<body class="bg-cover bg-center h-screen flex justify-center items-center" style="background-image: url('/static/background_image.jpg');">
+
+    <!-- Navbar -->
+    <nav class="bg-black bg-opacity-70 text-white fixed top-0 left-0 w-full p-4 flex justify-between items-center">
+        <div class="text-lg font-bold">Room Finder System</div>
+        <div class="space-x-6">
             {% if session['user_id'] %}
-                <a href="/index">Home</a>
-                <a href="/booking">Booking Details</a>
-                <a href="/logout">Logout</a>
+                <a href="/index" class="hover:underline">Home</a>
+                <a href="/logout" class="hover:underline">Logout</a>
+                <a href="/booking_details" class="hover:underline">Booking Details</a>
             {% else %}
-                <a href="/">Home</a>
-                <a href="/login">Login</a>
-                <a href="/register">Register</a>
+                <a href="/" class="hover:underline">Home</a>
+                <a href="/login" class="hover:underline">Login</a>
+                <a href="/register" class="hover:underline">Register</a>
             {% endif %}
         </div>
-    </div>
+    </nav>
     
     <div class="content">
         <div class="welcome-box">

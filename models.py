@@ -27,3 +27,12 @@ class Room(db.Model):
     accommodation_type = db.Column(db.String(255), nullable=False)
     latitude = db.Column(db.Float, nullable=False)
     longitude = db.Column(db.Float, nullable=False)
+
+class BookingDetails(db.Model):
+    bookingId = db.Column(db.String(36), primary_key=True, unique=True, nullable=False, default=str(uuid.uuid4()))
+    ownerId = db.Column(db.String(36), db.ForeignKey('user_account.userId'), nullable=False)
+    roomId = db.Column(db.String(36), db.ForeignKey('room.roomId'), nullable=False)
+    check_in = db.Column(db.String(255), nullable=False)
+    check_out = db.Column(db.String(255), nullable=False)
+    total_cost = db.Column(db.String(255), nullable=False)
+    

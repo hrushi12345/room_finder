@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Hotel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-cover bg-center min-h-screen flex flex-col" style="background-image: url('/static/background_image.jpg');">
+
+    <!-- Navbar -->
+    <nav class="bg-black bg-opacity-70 text-white fixed top-0 left-0 w-full p-4 flex justify-between items-center">
+        <div class="text-lg font-bold">Room Finder System</div>
+        <div class="space-x-6">
+            {% if session['user_id'] %}
+                <a href="/index" class="hover:underline">Home</a>
+                <a href="/logout" class="hover:underline">Logout</a>
+                <a href="/booking_details" class="hover:underline">Booking Details</a>
+            {% else %}
+            <a href="/" class="hover:underline">Home</a>
+                <a href="/login" class="hover:underline">Login</a>
+                <a href="/register" class="hover:underline">Register</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <!-- Booking Form -->
+    <div class="flex items-center justify-center flex-grow mt-16">
+        <div class="bg-white p-6 rounded-lg shadow-lg w-11/12 max-w-md">
+            <h2 class="text-center text-2xl font-bold mb-4">Book Your Stay</h2>
+
+            <form action="{{ url_for('book_hotel_database') }}" method="POST">
+                <input type="hidden" name="hotel_name" value="{{ hotel_name }}">
+                <input type="hidden" name="cost_per_day" value="{{ cost }}">
+
+                <div class="mb-3">
+                    <label class="block text-gray-700">Hotel Name:</label>
+                    <input type="text" class="border p-2 w-full rounded" value="{{ hotel_name }}" readonly>
+                </div>
+
+                <div class="mb-3">
+                    <label class="block text-gray-700">Check-in Date:</label>
+                    <input type="date" class="border p-2 w-full rounded" name="check_in" id="check_in" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="block text-gray-700">Check-out Date:</label>
+                    <input type="date" class="border p-2 w-full rounded" name="check_out" id="check_out" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="block text-gray-700">Total Cost:</label>
+                    <input type="text" class="border p-2 w-full rounded" id="total_cost" name="total_cost"  value="{{ total_cost }}" readonly>
+                </div>
+
+                <button type="submit" class="bg-green-500 text-white px-4 py-2 w-full rounded hover:bg-green-600">
+                    Confirm Booking
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("check_out").addEventListener("change", function () {
+            let checkIn = new Date(document.getElementById("check_in").value);
+            let checkOut = new Date(this.value);
+            let costPerDay = parseFloat("{{ cost }}");
+            if (checkIn && checkOut && checkOut > checkIn) {
+                let days = (checkOut - checkIn) / (1000 * 60 * 60 * 24) + 1;
+                document.getElementById("total_cost").value = "$" + (days * costPerDay).toFixed(2);
+            } else {
+                document.getElementById("total_cost").value = "";
+            }
+        });
+    </script>
+
+</body>
+</html>

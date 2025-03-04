@@ -10,12 +10,12 @@
 
     <!-- Navbar -->
     <nav class="bg-black bg-opacity-70 text-white fixed top-0 left-0 w-full p-4 flex justify-between items-center">
-        <div class="text-lg font-bold">Hotel Recommender</div>
+        <div class="text-lg font-bold">Room Finder System</div>
         <div class="space-x-6">
             {% if session['user_id'] %}
                 <a href="/index" class="hover:underline">Home</a>
                 <a href="/logout" class="hover:underline">Logout</a>
-                <a href="/booking-details" class="hover:underline">Booking Details</a>
+                <a href="/booking_details" class="hover:underline">Booking Details</a>
             {% else %}
                 <a href="/" class="hover:underline">Home</a>
                 <a href="/login" class="hover:underline">Login</a>

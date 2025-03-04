@@ -10,14 +10,14 @@
 
     <!-- Navbar -->
     <nav class="bg-black bg-opacity-70 text-white fixed top-0 left-0 w-full p-4 flex justify-between items-center">
-        <div class="text-lg font-bold">Hotel Recommender</div>
+        <div class="text-lg font-bold">Room Finder System</div>
         <div class="space-x-6">
             {% if session['user_id'] %}
                 <a href="/index" class="hover:underline">Home</a>
                 <a href="/logout" class="hover:underline">Logout</a>
-                <a href="/booking-details" class="hover:underline">Booking Details</a>
+                <a href="/booking_details" class="hover:underline">Booking Details</a>
             {% else %}
-                <a href="/" class="hover:underline">Home</a>
+            <a href="/" class="hover:underline">Home</a>
                 <a href="/login" class="hover:underline">Login</a>
                 <a href="/register" class="hover:underline">Register</a>
             {% endif %}
@@ -25,7 +25,7 @@
     </nav>
 
     <!-- Main Container -->
-    <div class="flex items-center justify-center flex-grow">
+    <div class="flex items-center justify-center flex-grow mt-16">
         <div class="bg-white p-6 rounded-lg shadow-lg w-11/12 max-w-5xl">
             <h2 class="text-center text-2xl font-bold mb-4">
                 Recommended Hotels for <strong>{{ first_name }} {{ last_name }}</strong>
@@ -39,9 +39,8 @@
                                 <th class="border border-gray-300 px-4 py-2">Hotel Name</th>
                                 <th class="border border-gray-300 px-4 py-2">Region</th>
                                 <th class="border border-gray-300 px-4 py-2">Accommodation Type</th>
-                                <th class="border border-gray-300 px-4 py-2">Cost</th>
-                                <th class="border border-gray-300 px-4 py-2">Latitude</th>
-                                <th class="border border-gray-300 px-4 py-2">Longitude</th>
+                                <th class="border border-gray-300 px-4 py-2">Cost per Day</th>
+                                <th class="border border-gray-300 px-4 py-2">Action</th>
                             </tr>
                         </thead>
                         <tbody class="bg-gray-100">
@@ -51,8 +50,12 @@
                                 <td class="border border-gray-300 px-4 py-2">{{ hotel.region }}</td>
                                 <td class="border border-gray-300 px-4 py-2">{{ hotel.accommodation_type }}</td>
                                 <td class="border border-gray-300 px-4 py-2">${{ hotel.cost }}</td>
-                                <td class="border border-gray-300 px-4 py-2">{{ hotel.latitude }}</td>
-                                <td class="border border-gray-300 px-4 py-2">{{ hotel.longitude }}</td>
+                                <td class="border border-gray-300 px-4 py-2 text-center">
+                                    <button onclick='bookHotel({"hotel_name": "{{ hotel.hotel_name }}", "cost": "{{ hotel.cost }}"})'
+                                        class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+                                        Book Now
+                                    </button>
+                                </td>
                             </tr>
                             {% endfor %}
                         </tbody>
@@ -69,6 +72,32 @@
             </div>
         </div>
     </div>
-
+    <script>
+        function bookHotel(hotel) {
+            console.log("Booking hotel:", hotel); // Debugging log
+    
+            fetch('/book_hotel', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(hotel)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log("API Response:", data); // Debugging log
+                if (data.status === "success") {
+                    window.location.href = "/booking_page";
+                } else {
+                    alert("Booking failed. Please try again.");
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("Error connecting to the server.");
+            });
+        }
+    </script>
+        
 </body>
 </html>
